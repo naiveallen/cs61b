@@ -1,3 +1,7 @@
+---
+
+---
+
 # CS61b
 
 #### Lab1：
@@ -21,7 +25,9 @@ git连接远程仓库的几条常用命令总结：
 
 #### project 0：
 
-模拟太阳系的行星运行轨迹。项目完成效果图如下：![GIF](C:\Users\dell\Desktop\CS61b\proj0\GIF.gif)
+模拟太阳系的行星运行轨迹。项目完成效果图如下：
+
+![GIF](https://github.com/naiveallen/cs61b/raw/master/proj0/GIF.gif)
 
 
 
