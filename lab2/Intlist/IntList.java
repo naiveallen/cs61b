@@ -81,8 +81,15 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if(A == null){
+            return B;
+        }
+        IntList p = A;
+        while(p.rest != null) {
+            p = p.rest;
+        }
+        p.rest = B;
+        return A;
     }
 
     /**
@@ -90,11 +97,42 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        // Iterative
+
+        /*if(A == null) {
+            return B;
+        }
+        IntList res = new IntList(A.first, null);  // 固定头结点
+        IntList p = res;      // 设置跑腿节点
+        A = A.rest;
+        while(A != null){     // 尾插法
+            p.rest = new IntList(A.first, null);
+            A = A.rest;
+            p = p.rest;
+        }
+        p.rest = B;
+        return res;*/
+
+        // Recursive
+
+        if(A == null){
+            return B;
+        }
+        IntList res = helper(A);
+        IntList p = res;
+        while(p.rest != null){
+            p = p.rest;
+        }
+        p.rest = B;
+        return res;
     }
 
-
+    private static IntList helper(IntList A){
+        if(A == null){
+            return null;
+        }
+        return new IntList(A.first, helper(A.rest));
+    }
 
 
 
