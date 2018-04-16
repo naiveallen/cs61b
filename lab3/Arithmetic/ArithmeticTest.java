@@ -13,7 +13,7 @@ public class ArithmeticTest {
         */
 
         assertEquals(30, Arithmetic.product(5, 6));
-        assertEquals(-30, Arithmetic.product(5, -6));
+        assertEquals(88, Arithmetic.product(11, 8));
         assertEquals(0, Arithmetic.product(0, -6));
     }
 
