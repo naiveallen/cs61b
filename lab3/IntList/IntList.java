@@ -11,11 +11,11 @@ public class IntList {
     /**
      * First element of list.
      */
-    public int first;
+    private int first;
     /**
      * Remaining elements of list.
      */
-    public IntList rest;
+    private IntList rest;
 
     /**
      * A List with first FIRST0 and rest REST0.
@@ -81,11 +81,11 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        if(A == null){
+        if (A == null) {
             return B;
         }
         IntList p = A;
-        while(p.rest != null) {
+        while (p.rest != null) {
             p = p.rest;
         }
         p.rest = B;
@@ -99,13 +99,13 @@ public class IntList {
     public static IntList catenate(IntList A, IntList B) {
         // Iterative
 
-        /*if(A == null) {
+        /*if (A == null) {
             return B;
         }
         IntList res = new IntList(A.first, null);  // 固定头结点
         IntList p = res;      // 设置跑腿节点
         A = A.rest;
-        while(A != null){     // 尾插法
+        while (A != null) {     // 尾插法
             p.rest = new IntList(A.first, null);
             A = A.rest;
             p = p.rest;
@@ -115,28 +115,38 @@ public class IntList {
 
         // Recursive
 
-        if(A == null){
+        if (A == null) {
             return B;
         }
         IntList res = helper(A);
         IntList p = res;
-        while(p.rest != null){
+        while (p.rest != null) {
             p = p.rest;
         }
         p.rest = B;
         return res;
     }
 
-    private static IntList helper(IntList A){
-        if(A == null){
+    private static IntList helper(IntList A) {
+        if (A == null) {
             return null;
         }
         return new IntList(A.first, helper(A.rest));
     }
 
-    public static IntList reverse(IntList A){
-
-        return null;
+    public static IntList reverse(IntList A) {
+        if (A == null) {
+            return null;
+        }
+        IntList dummy = new IntList(0, A);
+        IntList pre = A.rest;
+        while (pre != null) {
+            A.rest = pre.rest;
+            pre.rest = dummy.rest;
+            dummy.rest = pre;
+            pre = A.rest;
+        }
+        return dummy.rest;
     }
 
 
