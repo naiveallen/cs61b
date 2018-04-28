@@ -10,10 +10,10 @@ import java.util.Random;
  * Draws a world that contains RANDOM tiles.
  */
 public class RandomWorldDemo {
-    private static final int WIDTH = 50;
-    private static final int HEIGHT = 50;
+    private static final int WIDTH = 30;
+    private static final int HEIGHT = 30;
 
-    private static final long SEED = 2873123;
+    private static final long SEED = 287001;
     private static final Random RANDOM = new Random(SEED);
 
     /**
@@ -48,7 +48,7 @@ public class RandomWorldDemo {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
-        TETile[][] randomTiles = new TETile[WIDTH][HEIGHT];
+        TETile[][] randomTiles = new TETile[30][30];
         fillWithRandomTiles(randomTiles);
 
         ter.renderFrame(randomTiles);
