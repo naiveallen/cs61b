@@ -1,13 +1,28 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
-import byog.TileEngine.TETile;
+import byog.TileEngine.*;
+
+import java.util.Random;
 
 public class Game {
-    TERenderer ter = new TERenderer();
+    private TERenderer ter = new TERenderer();
+    private TETile[][] world;
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
+    public static final int WIDTH = 60;
     public static final int HEIGHT = 30;
+    public static String saved = null;
+
+
+    public Game() {
+        ter.initialize(WIDTH, HEIGHT);
+        world = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                world[i][j] = Tileset.NOTHING;
+            }
+        }
+        ter.renderFrame(world);
+    }
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -32,7 +47,25 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
+        String isq = input.substring(input.length() - 2);
+        if(isq == ":q") {
+            input = input.substring(0, input.length() -2);
+            saved = input;
+        }
+        long seed = Long.parseLong(input);
+
+
+
+
         TETile[][] finalWorldFrame = null;
         return finalWorldFrame;
     }
+
+    private TETile[][] drawRectangularRoom(TETile[][] world, Position p, long seed) {
+        int width = RandomUtils.uniform(new Random(seed), 2, 6);
+        int height = RandomUtils.uniform(new Random(seed), 2, 6);
+
+    }
+
+
 }

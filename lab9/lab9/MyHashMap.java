@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import java.util.Set;
  *  A hash table-backed Map implementation. Provides amortized constant time
  *  access to elements via get(), remove(), and put() in the best case.
  *
- *  @author Your name here
+ *  @author Allen Yuan
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
@@ -23,6 +24,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     public MyHashMap() {
         buckets = new ArrayMap[DEFAULT_SIZE];
+        this.clear();
+    }
+
+    public MyHashMap(int initialSize) {
+        buckets = new ArrayMap[initialSize];
         this.clear();
     }
 
@@ -48,24 +54,56 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return Math.floorMod(key.hashCode(), numBuckets);
     }
 
-    /* Returns the value to which the specified key is mapped, or null if this
-     * map contains no mapping for the key.
+    /** Returns the value to which the specified key is mapped, or null if this
+     *  map contains no mapping for the key.
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        int index = hash(key);
+        return buckets[index].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        if(loadFactor() > MAX_LF) {
+            resize(2 * buckets.length);
+        }
+        int index = hash(key);
+        if(buckets[index].containsKey(key)) {
+            buckets[index].put(key, value);
+            return;
+        }
+        buckets[index].put(key, value);
+        size++;
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
+    }
+
+    private int rehash(K key, int length) {
+        if (key == null) {
+            return 0;
+        }
+
+        return Math.floorMod(key.hashCode(), length);
+    }
+
+    private void resize(int capacity) {
+        ArrayMap<K, V>[] newBuckets = new ArrayMap[capacity];
+        for (int i = 0; i < newBuckets.length; i += 1) {
+            newBuckets[i] = new ArrayMap<>();
+        }
+
+        Set<K> set = keySet();
+        for(K k : set) {
+            int index = rehash(k, newBuckets.length);
+            newBuckets[index].put(k, get(k));
+        }
+        buckets = newBuckets;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
@@ -73,27 +111,43 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<>();
+        for(int i = 0; i < buckets.length; i++) {
+            set.addAll(buckets[i].keySet());
+        }
+        return set;
     }
 
-    /* Removes the mapping for the specified key from this map if exists.
-     * Not required for this lab. If you don't implement this, throw an
-     * UnsupportedOperationException. */
+    /** Removes the mapping for the specified key from this map if exists.
+     *  Not required for this lab. If you don't implement this, throw an
+     *  UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        V value = null;
+        if(containsKey(key)) {
+            int index = hash(key);
+            value = buckets[index].remove(key);
+            size--;
+        }
+        return value;
     }
 
-    /* Removes the entry for the specified key only if it is currently mapped to
-     * the specified value. Not required for this lab. If you don't implement this,
-     * throw an UnsupportedOperationException.*/
+    /** Removes the entry for the specified key only if it is currently mapped to
+     *  the specified value. Not required for this lab. If you don't implement this,
+     *  throw an UnsupportedOperationException.*/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        V returnvalue = null;
+        if(containsKey(key) && value.equals(get(key))) {
+            int index = hash(key);
+            returnvalue = buckets[index].remove(key, value);
+            size--;
+        }
+        return returnvalue;
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet().iterator();
     }
 }
